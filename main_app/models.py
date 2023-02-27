@@ -50,3 +50,21 @@ class Bill(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name='Описание счета')
     date = models.DateField(auto_now=True, verbose_name='Дата изменения')
     bills_category = models.ForeignKey(BillsCategory, on_delete=models.CASCADE, related_name='bills')
+
+class Incomes(models.Model):
+    """Поступление в бюджет"""
+    creation_date = models.DateField(auto_now_add=True, verbose_name='Дата создания')
+    name = models.CharField(max_length=30, verbose_name='Наименование расхода')
+    summ = models.DecimalField(max_digits=19, decimal_places=2, verbose_name='Сумма расхода')
+    description = models.TextField(null=True, blank=True, verbose_name='Описание расхода')
+    plan = models.BooleanField(default=False, verbose_name='Плановое поступление')
+    permanent_income = models.BooleanField(default=False, verbose_name='Постоянный доход')
+    category = models.ForeignKey(CategoryIncome, on_delete=models.CASCADE, related_name='incomes')
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='incomes', verbose_name='Валюта')
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE, related_name='incomes', verbose_name='Счет')
+
+class CategoryCost(models.Model):
+    """Категории расхода ДС"""
+    name_categorycost = models.CharField(max_length=30, unique=True, verbose_name='Наименование категории расхода ДС')
+    plan = models.DecimalField(max_digits=19, decimal_places=2, verbose_name='Планируемое значение расхода')
+    description = models.TextField(null=True, blank=True, verbose_name='Описание категории')
