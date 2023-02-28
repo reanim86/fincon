@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+from main_app.models import Bill
+
+
